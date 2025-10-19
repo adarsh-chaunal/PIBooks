@@ -1,0 +1,132 @@
+service: book-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    MONGODB_URI: ${env:MONGODB_URI}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "arn:aws:logs:*:*:*"
+
+functions:
+  api:
+    handler: lambda-handler.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+      - http:
+          path: /
+          method: ANY
+          cors: true
+    timeout: 30
+    memorySize: 512
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    host: 0.0.0.0
+
+package:
+  exclude:
+    - node_modules/**
+    - .git/**
+    - .env
+    - README.md
+    - deploy/**
+  include:
+    - PiBooksAPI/**
+    - Shared/**
+
+resources:
+  Resources:
+    # S3 Bucket for frontend
+    FrontendBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-frontend-${self:provider.stage}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+
+    # S3 Bucket Policy for frontend
+    FrontendBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref FrontendBucket
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal: "*"
+              Action: s3:GetObject
+              Resource: !Sub "${FrontendBucket}/*"
+
+    # CloudFront Distribution
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: !GetAtt FrontendBucket.RegionalDomainName
+              Id: S3Origin
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: http-only
+          Enabled: true
+          DefaultRootObject: index.html
+          DefaultCacheBehavior:
+            TargetOriginId: S3Origin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          PriceClass: PriceClass_100
+
+outputs:
+  ApiGatewayRestApiId:
+    Value: !Ref ApiGatewayRestApi
+    Export:
+      Name: ${self:service}-${self:provider.stage}-ApiGatewayRestApiId
+
+  ApiGatewayRestApiRootResourceId:
+    Value: !GetAtt ApiGatewayRestApi.RootResourceId
+    Export:
+      Name: ${self:service}-${self:provider.stage}-ApiGatewayRestApiRootResourceId
+
+  FrontendBucketName:
+    Value: !Ref FrontendBucket
+    Export:
+      Name: ${self:service}-${self:provider.stage}-FrontendBucketName
+
+  CloudFrontDistributionId:
+    Value: !Ref CloudFrontDistribution
+    Export:
+      Name: ${self:service}-${self:provider.stage}-CloudFrontDistributionId
+
+  CloudFrontDomainName:
+    Value: !GetAtt CloudFrontDistribution.DomainName
+    Export:
+      Name: ${self:service}-${self:provider.stage}-CloudFrontDomainName

@@ -1,0 +1,28 @@
+{
+  "name": "book-api-deployment",
+  "version": "1.0.0",
+  "description": "Deployment scripts and configuration for Book API AWS deployment",
+  "scripts": {
+    "deploy:frontend": "cd ../PiBooksWebUI && npm run build:prod && aws s3 sync build/ s3://your-book-api-bucket/frontend/ --delete",
+    "deploy:backend": "cd ../PiBooksAPI && npm run deploy",
+    "deploy:all": "npm run deploy:frontend && npm run deploy:backend",
+    "setup:aws": "aws s3 mb s3://your-book-api-bucket",
+    "clean": "rm -f backend-deployment.zip book-api-deployment.zip",
+    "quick-deploy": "chmod +x quick-deploy.sh && ./quick-deploy.sh",
+    "serverless:deploy": "serverless deploy --stage dev",
+    "serverless:remove": "serverless remove --stage dev"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0"
+  },
+  "keywords": [
+    "aws",
+    "deployment",
+    "serverless",
+    "lambda",
+    "s3"
+  ],
+  "author": "adarsh",
+  "license": "MIT"
+}

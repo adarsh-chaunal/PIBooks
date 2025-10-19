@@ -1,0 +1,31 @@
+{
+  "aws": {
+    "region": "us-east-1",
+    "s3Bucket": "your-book-api-bucket",
+    "cloudfrontDistributionId": "",
+    "lambdaFunctionName": "book-api-backend",
+    "apiGatewayName": "book-api-gateway"
+  },
+  "frontend": {
+    "buildCommand": "npm run build",
+    "buildDirectory": "build",
+    "environment": {
+      "REACT_APP_API_URL": "https://your-api-gateway-url.amazonaws.com/prod/api/v1"
+    }
+  },
+  "backend": {
+    "runtime": "nodejs18.x",
+    "handler": "server.handler",
+    "timeout": 30,
+    "memory": 512,
+    "environment": {
+      "NODE_ENV": "production",
+      "PORT": "3000",
+      "MONGODB_URI": "your-mongodb-connection-string"
+    }
+  },
+  "deployment": {
+    "stages": ["dev", "staging", "prod"],
+    "currentStage": "dev"
+  }
+}
