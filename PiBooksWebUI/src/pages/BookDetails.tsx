@@ -8,9 +8,9 @@ import {
   Button,
   Chip,
   CircularProgress,
-  Alert,
-  Grid,
+  Alert
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { Edit as EditIcon, ArrowBack as BackIcon } from '@mui/icons-material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { bookService, Book } from '../services/bookService';
@@ -85,7 +85,7 @@ const BookDetails: React.FC = () => {
       <Card>
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
+            {/* <Grid item xs={12} md={8}> */}
               <Typography variant="h4" component="h1" gutterBottom>
                 {book.title}
               </Typography>
@@ -121,7 +121,7 @@ const BookDetails: React.FC = () => {
                   <strong>Last Updated:</strong> {new Date(book.updatedAt).toLocaleDateString()}
                 </Typography>
               )}
-            </Grid>
+            {/* </Grid> */}
           </Grid>
         </CardContent>
       </Card>

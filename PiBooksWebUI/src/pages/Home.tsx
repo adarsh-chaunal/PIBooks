@@ -5,9 +5,9 @@ import {
   Box,
   Card,
   CardContent,
-  Grid,
   Button,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { Book, Add, List } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       </Box>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
-        <Grid item xs={12} md={4}>
+        {/* <Grid xs={12} md={4}> */}
           <Card sx={{ height: '100%', textAlign: 'center' }}>
             <CardContent>
               <Book sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
@@ -46,9 +46,9 @@ const Home: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
-        </Grid>
+        {/* </Grid> */}
 
-        <Grid item xs={12} md={4}>
+        {/* <Grid xs={12} md={4}> */}
           <Card sx={{ height: '100%', textAlign: 'center' }}>
             <CardContent>
               <Add sx={{ fontSize: 60, color: 'secondary.main', mb: 2 }} />
@@ -69,9 +69,9 @@ const Home: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
-        </Grid>
+        {/* </Grid> */}
 
-        <Grid item xs={12} md={4}>
+        {/* <Grid xs={12} md={4}> */}
           <Card sx={{ height: '100%', textAlign: 'center' }}>
             <CardContent>
               <Book sx={{ fontSize: 60, color: 'success.main', mb: 2 }} />
@@ -92,7 +92,7 @@ const Home: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
-        </Grid>
+        {/* </Grid> */}
       </Grid>
     </Container>
   );

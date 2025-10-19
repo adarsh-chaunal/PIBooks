@@ -7,12 +7,12 @@ import {
   CardContent,
   CardActions,
   Button,
-  Grid,
   Chip,
   CircularProgress,
   Alert,
   IconButton,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -108,7 +108,7 @@ const BookList: React.FC = () => {
       ) : (
         <Grid container spacing={3}>
           {books.map((book) => (
-            <Grid item xs={12} sm={6} md={4} key={book.id}>
+            // <Grid xs={12} sm={6} md={4} key={book.id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" component="h2" gutterBottom>
@@ -156,7 +156,7 @@ const BookList: React.FC = () => {
                   </IconButton>
                 </CardActions>
               </Card>
-            </Grid>
+            // </Grid>
           ))}
         </Grid>
       )}
