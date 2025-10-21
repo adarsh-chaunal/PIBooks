@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Deployment scripts and configuration for Book API AWS deployment",
   "scripts": {
-    "deploy:frontend": "cd ../PiBooksWebUI && npm run build:prod && aws s3 sync build/ s3://your-book-api-bucket/frontend/ --delete",
+    "deploy:frontend": "cd ../PiBooksWebUI && npm run build:prod && aws s3 sync build/ s3://serverless-webapp-advance-aws/ --delete",
     "deploy:backend": "cd ../PiBooksAPI && npm run deploy",
     "deploy:all": "npm run deploy:frontend && npm run deploy:backend",
-    "setup:aws": "aws s3 mb s3://your-book-api-bucket",
+    "setup:aws": "aws s3 mb s3://serverless-webapp-advance-aws --region eu-north-1",
     "clean": "rm -f backend-deployment.zip book-api-deployment.zip",
     "quick-deploy": "chmod +x quick-deploy.sh && ./quick-deploy.sh",
     "serverless:deploy": "serverless deploy --stage dev",

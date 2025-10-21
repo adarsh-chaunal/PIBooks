@@ -1,7 +1,7 @@
 {
   "aws": {
-    "region": "us-east-1",
-    "s3Bucket": "your-book-api-bucket",
+    "region": "eu-north-1",
+    "s3Bucket": "serverless-webapp-advance-aws",
     "cloudfrontDistributionId": "",
     "lambdaFunctionName": "book-api-backend",
     "apiGatewayName": "book-api-gateway"

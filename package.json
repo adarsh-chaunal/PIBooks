@@ -30,5 +30,8 @@
     "material-ui"
   ],
   "author": "adarsh",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "serverless-http": "^4.0.0"
+  }
 }
